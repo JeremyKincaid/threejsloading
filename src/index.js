@@ -22,7 +22,7 @@ const camera = new PerspectiveCamera( 75, window.innerWidth / window.innerHeight
 const renderer = new WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = PCFSoftShadowMap;
+renderer.shadowMap.type = BasicShadowMap;
 document.body.appendChild( renderer.domElement );
 
 // const light = new AmbientLight( 0x404040 );
