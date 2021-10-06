@@ -1,8 +1,12 @@
 const path = require('path');
 
 module.exports = {
+  mode: 'development',
   output: {
     filename: 'main.js',
+  },
+  devServer: {
+      static: './dist',
   },
   module:{
     rules:[
