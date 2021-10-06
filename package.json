@@ -1,0 +1,21 @@
+{
+  "name": "threedee2",
+  "version": "1.0.0",
+  "description": "ayy",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "file-loader": "^6.2.0",
+    "gltf-webpack-loader": "^1.0.6",
+    "lodash": "^4.17.21",
+    "three": "^0.133.1"
+  },
+  "devDependencies": {
+    "webpack": "^5.56.1",
+    "webpack-cli": "^4.8.0"
+  }
+}
