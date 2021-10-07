@@ -18,9 +18,17 @@ import {
     Color
 } from 'three';
 
+let isLosingWall = false;
+let isBringinEmBack = false;
 const changeBtn = document.getElementById('change-color');
-changeBtn.addEventListener('mouseover', () => console.log("Correct ID!"));
-changeBtn.addEventListener('click', loseWalls);
+changeBtn.addEventListener('click', patience);
+function patience(){
+    if(isLosingWall || isBringinEmBack) {
+        alert("BE PATIENT YOU FOOL");
+    } else {
+        isLosingWall = true;
+    }
+}
 
 const scene = new Scene();
 const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -81,24 +89,32 @@ rightWall.rotation.set(0, 1.5708, 0);
 scene.add(rightWall);
 
 const floor = new Mesh(floorCeiling, pMaterial);
-floor.position.set(0, -12.5, -25);
+floor.position.set(0, -12.5, 0);
 floor.rotation.set(1.5708, 0, 0);
 floor.receiveShadow = true;
 scene.add(floor);
 
 function loseWalls() {
-    // let leftWallX = leftWall.position.x;
-    // while(leftWallX >= -100.0) {
-    //     if (leftWallX >= -30.0) {
-    //         leftWall.position.x -= 0.5;
-    //     } else {
-    //         leftWall.position.x -= 1.0;
-    //     }
-    // }
-    let blue = new Color(0x4287f5);
-    pMaterial.color.equals(blue) ? pMaterial.color.setHex(0xfa020b) : pMaterial.color.setHex(0x4287f5);
-    
-    // bringEmBack();
+
+    if(leftWall.position.x >= -100.0) {
+        if (leftWall.position.x >= -30.0) {
+            leftWall.position.x -= 0.5;
+            rightWall.position.x += 0.5;
+            backWall.position.y += 0.5;
+            floor.position.y -= 0.5;
+        } else {
+            leftWall.position.x -= 1.0;
+            rightWall.position.x += 1.0;
+            backWall.position.y += 1.0;
+            floor.position.y -= 1.0;
+        }    
+    } else {
+        let blue = new Color(0x4287f5);
+        pMaterial.color.equals(blue) ? pMaterial.color.setHex(0xfa020b) : pMaterial.color.setHex(0x4287f5);
+        isLosingWall = false;    
+        isBringinEmBack = true;
+    }
+
 }
 
 /**
@@ -106,19 +122,34 @@ function loseWalls() {
  */
 function bringEmBack() {
     let leftWallX = leftWall.position.x;
-    while(leftWallX < -25.0) {
+    if(leftWallX < -25.0) {
         if (leftWallX < -30.0) {
             leftWall.position.x += 1.0;
+            rightWall.position.x -= 1.0;
+            backWall.position.y -= 1.0;
+            floor.position.y += 1.0;
         } else {
             leftWall.position.x += 0.5;
+            rightWall.position.x -= 0.5;
+            backWall.position.y -= 0.5;
+            floor.position.y += 0.5;
         }
+    } else {
+        isBringinEmBack = false;
     }
 }
 
-camera.position.z = 5;
+camera.position.z = 50;
 
 function animate() {
     requestAnimationFrame(animate);
+    console.log(leftWall.position.x);
+    if(isLosingWall) {
+        loseWalls();
+    }
+    if(isBringinEmBack) {
+        bringEmBack();
+    }
     pyramid.rotation.y += 0.01;
     renderer.render(scene, camera);
 }
